@@ -21,6 +21,125 @@
   }
 
   // =====================================================
+  // Custom Cursor
+  // =====================================================
+  function initCustomCursor() {
+    // Only on desktop
+    if (window.innerWidth < 1024 || 'ontouchstart' in window) return;
+
+    const cursor = document.createElement('div');
+    cursor.className = 'cursor';
+    document.body.appendChild(cursor);
+
+    const cursorDot = document.createElement('div');
+    cursorDot.className = 'cursor-dot';
+    document.body.appendChild(cursorDot);
+
+    let mouseX = 0, mouseY = 0;
+    let cursorX = 0, cursorY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      cursorDot.style.left = mouseX + 'px';
+      cursorDot.style.top = mouseY + 'px';
+    });
+
+    // Smooth cursor follow
+    function animateCursor() {
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+      cursor.style.left = cursorX + 'px';
+      cursor.style.top = cursorY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hover effect on interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .service-card, .stat-card, .contact-preview-item, input, textarea');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // Click effect
+    document.addEventListener('mousedown', () => cursor.classList.add('click'));
+    document.addEventListener('mouseup', () => cursor.classList.remove('click'));
+  }
+
+  // =====================================================
+  // Mouse Glow Effect on Cards
+  // =====================================================
+  function initMouseGlow() {
+    const cards = document.querySelectorAll('.service-card, .stat-card, .contact-preview-item, .value-card');
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', `${x}%`);
+        card.style.setProperty('--mouse-y', `${y}%`);
+      });
+    });
+  }
+
+  // =====================================================
+  // Magnetic Button Effect
+  // =====================================================
+  function initMagneticButtons() {
+    const magneticElements = document.querySelectorAll('.hero-cta, .btn-primary-large, .nav-cta');
+
+    magneticElements.forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+
+        el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+      });
+
+      el.addEventListener('mouseleave', () => {
+        el.style.transform = 'translate(0, 0)';
+      });
+    });
+  }
+
+  // =====================================================
+  // Parallax Scroll Effect
+  // =====================================================
+  function initParallax() {
+    const heroBackground = document.querySelector('.hero-background');
+    const heroVisual = document.querySelector('.hero-visual');
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+
+      if (heroBackground) {
+        heroBackground.style.transform = `translate(${scrollY * 0.05}px, ${scrollY * 0.1}px) scale(${1 + scrollY * 0.0002})`;
+      }
+
+      if (heroVisual && scrollY < window.innerHeight) {
+        heroVisual.style.transform = `translateY(${-scrollY * 0.15}px)`;
+      }
+    }, { passive: true });
+  }
+
+  // =====================================================
+  // Text Reveal Animation
+  // =====================================================
+  function initTextReveal() {
+    const heroTitle = document.querySelector('.hero-title');
+    if (!heroTitle) return;
+
+    // Add animation delay to words
+    const words = heroTitle.innerHTML.split(' ');
+    heroTitle.innerHTML = words.map((word, i) =>
+      `<span style="animation-delay: ${0.1 + i * 0.05}s">${word}</span>`
+    ).join(' ');
+  }
+
+  // =====================================================
   // Sticky Navigation
   // =====================================================
   function initStickyNav() {
@@ -228,6 +347,12 @@
     initContactForm();
     initSmoothScroll();
     setActiveNavLink();
+
+    // New elegant animations
+    initCustomCursor();
+    initMouseGlow();
+    initMagneticButtons();
+    initParallax();
   }
 
   // Run initialization when DOM is ready
