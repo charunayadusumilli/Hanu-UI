@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="managedGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6"/>
+      <stop offset="100%" style="stop-color:#06B6D4"/>
+    </linearGradient>
+  </defs>
+  <!-- Shield -->
+  <path d="M32 6L10 14v18c0 14 22 24 22 24s22-10 22-24V14L32 6z"
+        stroke="url(#managedGrad)" stroke-width="2.5" fill="none"/>
+  <!-- Inner shield glow -->
+  <path d="M32 12L16 18v14c0 10 16 18 16 18s16-8 16-18V18L32 12z"
+        fill="url(#managedGrad)" opacity="0.15"/>
+  <!-- Check mark -->
+  <path d="M24 32L30 38L42 24" stroke="url(#managedGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- 24/7 dots -->
+  <circle cx="20" cy="20" r="2" fill="#06B6D4"/>
+  <circle cx="44" cy="20" r="2" fill="#3B82F6"/>
+</svg>

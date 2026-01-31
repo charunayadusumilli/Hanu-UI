@@ -1,4 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 40" width="120" height="40">
-  <circle cx="20" cy="20" r="15" fill="#0066CC"/>
-  <text x="45" y="26" font-family="Inter, Arial, sans-serif" font-size="14" font-weight="600" fill="#1E3A5F">Innovate</text>
+  <defs>
+    <linearGradient id="c2Grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#94A3B8"/>
+      <stop offset="100%" style="stop-color:#64748B"/>
+    </linearGradient>
+  </defs>
+  <circle cx="12" cy="20" r="8" stroke="url(#c2Grad)" stroke-width="2" fill="none"/>
+  <circle cx="12" cy="20" r="3" fill="url(#c2Grad)"/>
+  <path d="M20 12a12 12 0 0 1 0 16" stroke="url(#c2Grad)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <text x="30" y="26" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#94A3B8">DataSync</text>
 </svg>

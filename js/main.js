@@ -21,7 +21,7 @@
   }
 
   // =====================================================
-  // Custom Cursor
+  // Custom Cursor with Trail Effect
   // =====================================================
   function initCustomCursor() {
     // Only on desktop
@@ -35,6 +35,18 @@
     cursorDot.className = 'cursor-dot';
     document.body.appendChild(cursorDot);
 
+    // Create trail particles
+    const trailCount = 8;
+    const trails = [];
+    for (let i = 0; i < trailCount; i++) {
+      const trail = document.createElement('div');
+      trail.className = 'cursor-trail';
+      trail.style.opacity = (1 - i / trailCount) * 0.4;
+      trail.style.transform = `scale(${1 - i / trailCount * 0.5})`;
+      document.body.appendChild(trail);
+      trails.push({ el: trail, x: 0, y: 0 });
+    }
+
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
 
@@ -45,21 +57,41 @@
       cursorDot.style.top = mouseY + 'px';
     });
 
-    // Smooth cursor follow
+    // Smooth cursor follow with trail
     function animateCursor() {
-      cursorX += (mouseX - cursorX) * 0.15;
-      cursorY += (mouseY - cursorY) * 0.15;
+      cursorX += (mouseX - cursorX) * 0.12;
+      cursorY += (mouseY - cursorY) * 0.12;
       cursor.style.left = cursorX + 'px';
       cursor.style.top = cursorY + 'px';
+
+      // Animate trails with staggered delay
+      let prevX = cursorX;
+      let prevY = cursorY;
+      trails.forEach((trail, i) => {
+        const speed = 0.25 - i * 0.02;
+        trail.x += (prevX - trail.x) * speed;
+        trail.y += (prevY - trail.y) * speed;
+        trail.el.style.left = trail.x + 'px';
+        trail.el.style.top = trail.y + 'px';
+        prevX = trail.x;
+        prevY = trail.y;
+      });
+
       requestAnimationFrame(animateCursor);
     }
     animateCursor();
 
     // Hover effect on interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, .service-card, .stat-card, .contact-preview-item, input, textarea');
+    const interactiveElements = document.querySelectorAll('a, button, .service-card, .stat-card, .contact-preview-item, input, textarea, .value-card');
     interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+      el.addEventListener('mouseenter', () => {
+        cursor.classList.add('hover');
+        trails.forEach(t => t.el.style.opacity = '0');
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.classList.remove('hover');
+        trails.forEach((t, i) => t.el.style.opacity = (1 - i / trailCount) * 0.4);
+      });
     });
 
     // Click effect
@@ -68,7 +100,7 @@
   }
 
   // =====================================================
-  // Mouse Glow Effect on Cards
+  // Mouse Glow Effect on Cards with Tilt
   // =====================================================
   function initMouseGlow() {
     const cards = document.querySelectorAll('.service-card, .stat-card, .contact-preview-item, .value-card');
@@ -78,8 +110,27 @@
         const rect = card.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        // Set mouse position for glow
         card.style.setProperty('--mouse-x', `${x}%`);
         card.style.setProperty('--mouse-y', `${y}%`);
+
+        // Calculate tilt based on mouse position
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        const rotateX = ((mouseY - centerY) / centerY) * -8;
+        const rotateY = ((mouseX - centerX) / centerX) * 8;
+
+        card.style.setProperty('--rotate-x', `${rotateX}deg`);
+        card.style.setProperty('--rotate-y', `${rotateY}deg`);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.setProperty('--rotate-x', '0deg');
+        card.style.setProperty('--rotate-y', '0deg');
       });
     });
   }
@@ -88,19 +139,34 @@
   // Magnetic Button Effect
   // =====================================================
   function initMagneticButtons() {
-    const magneticElements = document.querySelectorAll('.hero-cta, .btn-primary-large, .nav-cta');
+    const magneticElements = document.querySelectorAll('.hero-cta, .btn-primary-large, .nav-cta, .btn-submit');
 
     magneticElements.forEach(el => {
-      el.addEventListener('mousemove', (e) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
+      let bounds;
 
-        el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+      el.addEventListener('mouseenter', () => {
+        bounds = el.getBoundingClientRect();
+        el.style.transition = 'transform 0.1s ease, box-shadow 0.2s ease';
+      });
+
+      el.addEventListener('mousemove', (e) => {
+        const x = e.clientX - bounds.left - bounds.width / 2;
+        const y = e.clientY - bounds.top - bounds.height / 2;
+
+        const moveX = x * 0.35;
+        const moveY = y * 0.35;
+
+        el.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.02)`;
+        el.style.boxShadow = `
+          ${-moveX * 0.5}px ${-moveY * 0.5 + 20}px 40px rgba(6, 182, 212, 0.3),
+          0 0 30px rgba(59, 130, 246, 0.2)
+        `;
       });
 
       el.addEventListener('mouseleave', () => {
-        el.style.transform = 'translate(0, 0)';
+        el.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease';
+        el.style.transform = 'translate(0, 0) scale(1)';
+        el.style.boxShadow = '';
       });
     });
   }
