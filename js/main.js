@@ -20,57 +20,6 @@
     }
   }
 
-  // =====================================================
-  // Custom Cursor with Trail Effect
-  // =====================================================
-  function initCustomCursor() {
-    // Only on desktop
-    if (window.innerWidth < 1024 || 'ontouchstart' in window) return;
-
-    const cursor = document.createElement('div');
-    cursor.className = 'cursor';
-    document.body.appendChild(cursor);
-
-    const cursorDot = document.createElement('div');
-    cursorDot.className = 'cursor-dot';
-    document.body.appendChild(cursorDot);
-
-    let mouseX = 0, mouseY = 0;
-    let cursorX = 0, cursorY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-    });
-
-    // Smooth cursor follow
-    function animateCursor() {
-      cursorX += (mouseX - cursorX) * 0.15;
-      cursorY += (mouseY - cursorY) * 0.15;
-
-      // Use transform for smoother movement
-      cursor.style.transform = `translate3d(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%), 0)`;
-      cursorDot.style.transform = `translate3d(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%), 0)`;
-
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
-
-    // Hover effect on interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, .service-card, .stat-card, .contact-preview-item, input, textarea, .value-card');
-    interactiveElements.forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.classList.add('hover');
-      });
-      el.addEventListener('mouseleave', () => {
-        cursor.classList.remove('hover');
-      });
-    });
-
-    // Click effect
-    document.addEventListener('mousedown', () => cursor.classList.add('click'));
-    document.addEventListener('mouseup', () => cursor.classList.remove('click'));
-  }
 
   // =====================================================
   // Mouse Glow Effect on Cards with Tilt
@@ -396,7 +345,6 @@
     setActiveNavLink();
 
     // New elegant animations
-    initCustomCursor();
     initMouseGlow();
     initMagneticButtons();
     initParallax();
