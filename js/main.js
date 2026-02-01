@@ -213,44 +213,44 @@
     const phoneWarning = document.querySelector('.phone-warning');
     if (!phoneInput) return;
 
+    // Track the raw digits separately
+    let rawDigits = '';
+
     phoneInput.addEventListener('input', (e) => {
-      let value = e.target.value;
+      const value = e.target.value;
+      let inputDigits = value.replace(/\D/g, '');
 
-      // Remove all non-digit characters
-      let digits = value.replace(/\D/g, '');
-
-      // Remove leading 1 if user typed it (we'll add +1 automatically)
-      if (digits.startsWith('1') && digits.length > 10) {
-        digits = digits.substring(1);
+      // If user starts with 1 and types more than 10 digits, assume the 1 is the country code and strip it
+      if (inputDigits.length > 10 && inputDigits.startsWith('1')) {
+        inputDigits = inputDigits.substring(1);
       }
 
-      // Limit to 10 digits
-      if (digits.length > 10) {
-        digits = digits.substring(0, 10);
+      // If more than 10 digits attempted, show warning and truncate
+      if (inputDigits.length > 10) {
+        rawDigits = inputDigits.substring(0, 10);
         if (phoneWarning) {
           phoneWarning.style.display = 'block';
           phoneWarning.textContent = 'Maximum 10 digits allowed';
         }
       } else {
+        rawDigits = inputDigits;
         if (phoneWarning) {
           phoneWarning.style.display = 'none';
         }
       }
 
       // Format as +1 (XXX) XXX-XXXX
-      let formatted = '';
-      if (digits.length > 0) {
-        formatted = '+1 ';
-        if (digits.length <= 3) {
-          formatted += '(' + digits;
-        } else if (digits.length <= 6) {
-          formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3);
-        } else {
-          formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3, 6) + '-' + digits.substring(6);
+      e.target.value = formatPhoneNumber(rawDigits);
+    });
+
+    // Handle backspace/delete properly
+    phoneInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Backspace' || e.key === 'Delete') {
+        // Let the input event handle it naturally
+        if (phoneWarning) {
+          phoneWarning.style.display = 'none';
         }
       }
-
-      e.target.value = formatted;
     });
 
     // Handle paste
@@ -259,26 +259,37 @@
       const pastedText = (e.clipboardData || window.clipboardData).getData('text');
       let digits = pastedText.replace(/\D/g, '');
 
-      // Remove leading 1 if present
-      if (digits.startsWith('1') && digits.length > 10) {
+      // If user starts with 1 and types more than 10 digits, assume the 1 is the country code and strip it
+      if (digits.length > 10 && digits.startsWith('1')) {
         digits = digits.substring(1);
       }
 
-      // Limit and format
-      digits = digits.substring(0, 10);
-
-      if (digits.length > 0) {
-        let formatted = '+1 ';
-        if (digits.length <= 3) {
-          formatted += '(' + digits;
-        } else if (digits.length <= 6) {
-          formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3);
-        } else {
-          formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3, 6) + '-' + digits.substring(6);
+      // If more than 10 digits, show warning
+      if (digits.length > 10) {
+        digits = digits.substring(0, 10);
+        if (phoneWarning) {
+          phoneWarning.style.display = 'block';
+          phoneWarning.textContent = 'Maximum 10 digits allowed';
         }
-        phoneInput.value = formatted;
       }
+
+      rawDigits = digits;
+      phoneInput.value = formatPhoneNumber(rawDigits);
     });
+
+    function formatPhoneNumber(digits) {
+      if (digits.length === 0) return '';
+
+      let formatted = '+1 ';
+      if (digits.length <= 3) {
+        formatted += '(' + digits;
+      } else if (digits.length <= 6) {
+        formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3);
+      } else {
+        formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3, 6) + '-' + digits.substring(6);
+      }
+      return formatted;
+    }
   }
 
   // =====================================================
