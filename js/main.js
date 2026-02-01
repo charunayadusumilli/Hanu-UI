@@ -206,6 +206,82 @@
   }
 
   // =====================================================
+  // Phone Number Auto-Formatting
+  // =====================================================
+  function initPhoneFormatting() {
+    const phoneInput = document.getElementById('phone');
+    const phoneWarning = document.querySelector('.phone-warning');
+    if (!phoneInput) return;
+
+    phoneInput.addEventListener('input', (e) => {
+      let value = e.target.value;
+
+      // Remove all non-digit characters
+      let digits = value.replace(/\D/g, '');
+
+      // Remove leading 1 if user typed it (we'll add +1 automatically)
+      if (digits.startsWith('1') && digits.length > 10) {
+        digits = digits.substring(1);
+      }
+
+      // Limit to 10 digits
+      if (digits.length > 10) {
+        digits = digits.substring(0, 10);
+        if (phoneWarning) {
+          phoneWarning.style.display = 'block';
+          phoneWarning.textContent = 'Maximum 10 digits allowed';
+        }
+      } else {
+        if (phoneWarning) {
+          phoneWarning.style.display = 'none';
+        }
+      }
+
+      // Format as +1 (XXX) XXX-XXXX
+      let formatted = '';
+      if (digits.length > 0) {
+        formatted = '+1 ';
+        if (digits.length <= 3) {
+          formatted += '(' + digits;
+        } else if (digits.length <= 6) {
+          formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3);
+        } else {
+          formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3, 6) + '-' + digits.substring(6);
+        }
+      }
+
+      e.target.value = formatted;
+    });
+
+    // Handle paste
+    phoneInput.addEventListener('paste', (e) => {
+      e.preventDefault();
+      const pastedText = (e.clipboardData || window.clipboardData).getData('text');
+      let digits = pastedText.replace(/\D/g, '');
+
+      // Remove leading 1 if present
+      if (digits.startsWith('1') && digits.length > 10) {
+        digits = digits.substring(1);
+      }
+
+      // Limit and format
+      digits = digits.substring(0, 10);
+
+      if (digits.length > 0) {
+        let formatted = '+1 ';
+        if (digits.length <= 3) {
+          formatted += '(' + digits;
+        } else if (digits.length <= 6) {
+          formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3);
+        } else {
+          formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3, 6) + '-' + digits.substring(6);
+        }
+        phoneInput.value = formatted;
+      }
+    });
+  }
+
+  // =====================================================
   // Contact Form Handling
   // =====================================================
   function initContactForm() {
@@ -341,6 +417,7 @@
     initStickyNav();
     initMobileMenu();
     initContactForm();
+    initPhoneFormatting();
     initSmoothScroll();
     setActiveNavLink();
 

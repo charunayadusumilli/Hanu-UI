@@ -172,10 +172,11 @@
 
                 <div class="form-group">
                   <label for="phone">Phone Number</label>
-                  <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="+1 (234) 567-8900"
-                    pattern="[\+]?[0-9\s\-\(\)]{7,20}" maxlength="20"
-                    title="Please enter a valid phone number (7-20 digits, may include +, spaces, dashes, parentheses)">
-                  <span class="form-hint phone-hint">Format: +1 (234) 567-8900</span>
+                  <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(234) 567-8900"
+                    maxlength="14">
+                  <span class="form-warning phone-warning"
+                    style="display: none; color: #EF4444; font-size: 0.8125rem; margin-top: 0.5rem;">Maximum 10 digits
+                    allowed</span>
                 </div>
               </div>
 
