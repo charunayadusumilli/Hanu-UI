@@ -323,7 +323,7 @@
         // Error
         if (statusDiv) {
           statusDiv.className = 'form-status error';
-          statusDiv.textContent = 'Something went wrong. Please try again or email us directly at info@hanucorp.com';
+          statusDiv.textContent = 'Something went wrong. Please try again or email us directly at contact@hanu-consulting.com';
           statusDiv.style.display = 'block';
         }
         console.error('Form submission error:', error);
