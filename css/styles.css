@@ -689,6 +689,15 @@ section {
   gap: var(--space-sm);
 }
 
+/* =====================================================
+   PAGE HERO (Services, About, Contact pages)
+   ===================================================== */
+.page-hero {
+  padding: 10rem 2rem 4rem;
+  background: linear-gradient(135deg, var(--slate-50) 0%, var(--white) 100%);
+  text-align: center;
+}
+
 .page-hero-title {
   font-size: clamp(2.5rem, 5vw, 3.5rem);
   font-weight: 700;
