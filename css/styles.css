@@ -162,20 +162,6 @@ p {
 }
 
 /* Cursor trail particles */
-.cursor-trail {
-  width: 6px;
-  height: 6px;
-  background: var(--secondary);
-  border-radius: 50%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0;
-  box-shadow: 0 0 8px rgba(6, 182, 212, 0.6);
-  transition: opacity 0.5s ease;
-  will-change: transform;
 }
 
 img {

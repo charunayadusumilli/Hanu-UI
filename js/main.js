@@ -35,29 +35,15 @@
     cursorDot.className = 'cursor-dot';
     document.body.appendChild(cursorDot);
 
-    // Create trail particles
-    const trailCount = 8;
-    const trails = [];
-    for (let i = 0; i < trailCount; i++) {
-      const trail = document.createElement('div');
-      trail.className = 'cursor-trail';
-      trail.style.opacity = (1 - i / trailCount) * 0.4;
-      trail.style.transform = `scale(${1 - i / trailCount * 0.5})`;
-      document.body.appendChild(trail);
-      trails.push({ el: trail, x: 0, y: 0 });
-    }
-
     let mouseX = 0, mouseY = 0;
     let cursorX = 0, cursorY = 0;
 
     document.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
       mouseY = e.clientY;
-      cursorDot.style.left = mouseX + 'px';
-      cursorDot.style.top = mouseY + 'px';
     });
 
-    // Smooth cursor follow with trail
+    // Smooth cursor follow
     function animateCursor() {
       cursorX += (mouseX - cursorX) * 0.15;
       cursorY += (mouseY - cursorY) * 0.15;
@@ -65,18 +51,6 @@
       // Use transform for smoother movement
       cursor.style.transform = `translate3d(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%), 0)`;
       cursorDot.style.transform = `translate3d(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%), 0)`;
-
-      // Animate trails with staggered delay
-      let prevX = cursorX;
-      let prevY = cursorY;
-      trails.forEach((trail, i) => {
-        const speed = 0.25 - i * 0.02;
-        trail.x += (prevX - trail.x) * speed;
-        trail.y += (prevY - trail.y) * speed;
-        trail.el.style.transform = `translate3d(${trail.x}px, ${trail.y}px, 0)`;
-        prevX = trail.x;
-        prevY = trail.y;
-      });
 
       requestAnimationFrame(animateCursor);
     }
@@ -87,11 +61,9 @@
     interactiveElements.forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursor.classList.add('hover');
-        trails.forEach(t => t.el.style.opacity = '0');
       });
       el.addEventListener('mouseleave', () => {
         cursor.classList.remove('hover');
-        trails.forEach((t, i) => t.el.style.opacity = (1 - i / trailCount) * 0.4);
       });
     });
 
