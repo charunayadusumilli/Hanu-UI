@@ -200,9 +200,16 @@ ol {
   font-size: 0.9375rem;
 }
 
-.nav-links a:hover,
+.nav-links a:hover {
+  color: var(--primary);
+}
+
 .nav-links a.active {
   color: var(--primary);
+  font-weight: 600;
+  background: var(--primary-light);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
 }
 
 .nav-cta {
