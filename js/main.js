@@ -206,90 +206,64 @@
   }
 
   // =====================================================
-  // Phone Number Auto-Formatting
+  // Phone Number Auto-Formatting & Validation
   // =====================================================
   function initPhoneFormatting() {
     const phoneInput = document.getElementById('phone');
     const phoneWarning = document.querySelector('.phone-warning');
     if (!phoneInput) return;
 
-    // Track the raw digits separately
-    let rawDigits = '';
-
     phoneInput.addEventListener('input', (e) => {
       const value = e.target.value;
-      let inputDigits = value.replace(/\D/g, '');
 
-      // If user starts with 1 and types more than 10 digits, assume the 1 is the country code and strip it
-      if (inputDigits.length > 10 && inputDigits.startsWith('1')) {
-        inputDigits = inputDigits.substring(1);
+      // 1. Extract local digits only
+      // If starts with +1, skip the prefix. Otherwise, just clean all.
+      let localDigits = '';
+      if (value.startsWith('+1')) {
+        localDigits = value.substring(3).replace(/\D/g, '');
+      } else {
+        localDigits = value.replace(/\D/g, '');
+        // If they typed a leading 1 by themselves, treat it as country code and strip it
+        if (localDigits.startsWith('1')) {
+          localDigits = localDigits.substring(1);
+        }
       }
 
-      // If more than 10 digits attempted, show warning and truncate
-      if (inputDigits.length > 10) {
-        rawDigits = inputDigits.substring(0, 10);
+      // 2. Enforce 10-digit limit
+      if (localDigits.length > 10) {
+        localDigits = localDigits.substring(0, 10);
         if (phoneWarning) {
           phoneWarning.style.display = 'block';
-          phoneWarning.textContent = 'Maximum 10 digits allowed';
+          phoneWarning.style.color = '#EF4444';
         }
       } else {
-        rawDigits = inputDigits;
         if (phoneWarning) {
           phoneWarning.style.display = 'none';
         }
       }
 
-      // Format as +1 (XXX) XXX-XXXX
-      e.target.value = formatPhoneNumber(rawDigits);
+      // 3. Format output
+      if (localDigits.length === 0) {
+        e.target.value = '';
+      } else {
+        let formatted = '+1 ';
+        if (localDigits.length <= 3) {
+          formatted += '(' + localDigits;
+        } else if (localDigits.length <= 6) {
+          formatted += '(' + localDigits.substring(0, 3) + ') ' + localDigits.substring(3);
+        } else {
+          formatted += '(' + localDigits.substring(0, 3) + ') ' + localDigits.substring(3, 6) + '-' + localDigits.substring(6);
+        }
+        e.target.value = formatted;
+      }
     });
 
-    // Handle backspace/delete properly
+    // Handle backspace properly (don't show warning when deleting)
     phoneInput.addEventListener('keydown', (e) => {
       if (e.key === 'Backspace' || e.key === 'Delete') {
-        // Let the input event handle it naturally
-        if (phoneWarning) {
-          phoneWarning.style.display = 'none';
-        }
+        if (phoneWarning) phoneWarning.style.display = 'none';
       }
     });
-
-    // Handle paste
-    phoneInput.addEventListener('paste', (e) => {
-      e.preventDefault();
-      const pastedText = (e.clipboardData || window.clipboardData).getData('text');
-      let digits = pastedText.replace(/\D/g, '');
-
-      // If user starts with 1 and types more than 10 digits, assume the 1 is the country code and strip it
-      if (digits.length > 10 && digits.startsWith('1')) {
-        digits = digits.substring(1);
-      }
-
-      // If more than 10 digits, show warning
-      if (digits.length > 10) {
-        digits = digits.substring(0, 10);
-        if (phoneWarning) {
-          phoneWarning.style.display = 'block';
-          phoneWarning.textContent = 'Maximum 10 digits allowed';
-        }
-      }
-
-      rawDigits = digits;
-      phoneInput.value = formatPhoneNumber(rawDigits);
-    });
-
-    function formatPhoneNumber(digits) {
-      if (digits.length === 0) return '';
-
-      let formatted = '+1 ';
-      if (digits.length <= 3) {
-        formatted += '(' + digits;
-      } else if (digits.length <= 6) {
-        formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3);
-      } else {
-        formatted += '(' + digits.substring(0, 3) + ') ' + digits.substring(3, 6) + '-' + digits.substring(6);
-      }
-      return formatted;
-    }
   }
 
   // =====================================================
@@ -300,7 +274,7 @@
     if (!form) return;
 
     const submitBtn = form.querySelector('#submit-btn');
-    const btnText = submitBtn?.querySelector('.btn-text');
+    const btnText = submitBtn?.querySelector('.submit-btn-text');
     const btnLoading = submitBtn?.querySelector('.btn-loading');
     const statusDiv = document.getElementById('form-status');
 

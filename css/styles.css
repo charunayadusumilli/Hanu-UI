@@ -1080,8 +1080,9 @@ section {
 }
 
 /* Ensure button text is white */
-.btn-submit .btn-text {
-  color: var(--white);
+.btn-submit .submit-btn-text {
+  color: var(--white) !important;
+  font-weight: 600;
 }
 
 .btn-loading {
@@ -1097,8 +1098,11 @@ section {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
 }
 
-.phone-hint {
-  display: block;
+.phone-warning {
+  color: #EF4444;
+  font-weight: 600;
+  display: none;
+  margin-top: 0.5rem;
 }
 
 /* Form Status Messages */
