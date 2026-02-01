@@ -3,7 +3,7 @@
  * Handles animations, navigation, and form interactions
  */
 
-(function() {
+(function () {
   'use strict';
 
   // =====================================================
@@ -59,10 +59,12 @@
 
     // Smooth cursor follow with trail
     function animateCursor() {
-      cursorX += (mouseX - cursorX) * 0.12;
-      cursorY += (mouseY - cursorY) * 0.12;
-      cursor.style.left = cursorX + 'px';
-      cursor.style.top = cursorY + 'px';
+      cursorX += (mouseX - cursorX) * 0.15;
+      cursorY += (mouseY - cursorY) * 0.15;
+
+      // Use transform for smoother movement
+      cursor.style.transform = `translate3d(calc(${cursorX}px - 50%), calc(${cursorY}px - 50%), 0)`;
+      cursorDot.style.transform = `translate3d(calc(${mouseX}px - 50%), calc(${mouseY}px - 50%), 0)`;
 
       // Animate trails with staggered delay
       let prevX = cursorX;
@@ -71,8 +73,7 @@
         const speed = 0.25 - i * 0.02;
         trail.x += (prevX - trail.x) * speed;
         trail.y += (prevY - trail.y) * speed;
-        trail.el.style.left = trail.x + 'px';
-        trail.el.style.top = trail.y + 'px';
+        trail.el.style.transform = `translate3d(${trail.x}px, ${trail.y}px, 0)`;
         prevX = trail.x;
         prevY = trail.y;
       });
@@ -106,8 +107,15 @@
     const cards = document.querySelectorAll('.service-card, .stat-card, .contact-preview-item, .value-card');
 
     cards.forEach(card => {
+      let rect;
+
+      card.addEventListener('mouseenter', () => {
+        rect = card.getBoundingClientRect();
+      });
+
       card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
+        if (!rect) rect = card.getBoundingClientRect();
+
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
 
@@ -131,6 +139,7 @@
       card.addEventListener('mouseleave', () => {
         card.style.setProperty('--rotate-x', '0deg');
         card.style.setProperty('--rotate-y', '0deg');
+        rect = null;
       });
     });
   }
@@ -350,7 +359,7 @@
   // =====================================================
   function initSmoothScroll() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(e) {
+      anchor.addEventListener('click', function (e) {
         const targetId = this.getAttribute('href');
         if (targetId === '#') return;
 
