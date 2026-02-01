@@ -1079,8 +1079,26 @@ section {
   cursor: not-allowed;
 }
 
+/* Ensure button text is white */
+.btn-submit .btn-text {
+  color: var(--white);
+}
+
 .btn-loading {
   display: none;
+}
+
+/* Form Validation Styling */
+.form-group input:invalid:not(:placeholder-shown) {
+  border-color: #EF4444;
+}
+
+.form-group input:invalid:not(:placeholder-shown):focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.phone-hint {
+  display: block;
 }
 
 /* Form Status Messages */
