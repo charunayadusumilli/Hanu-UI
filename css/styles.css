@@ -236,13 +236,15 @@ ol {
   cursor: pointer;
   padding: 5px;
   z-index: 1001;
+  background: transparent;
+  border: none;
 }
 
 .menu-toggle span {
   width: 24px;
   height: 2px;
-  background: var(--text);
-  transition: var(--transition-medium);
+  background: var(--slate-900);
+  transition: var(--transition-smooth);
 }
 
 .menu-toggle.active span:nth-child(1) {
