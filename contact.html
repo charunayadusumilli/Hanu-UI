@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 
   <!-- Google Tag Manager -->
   <script>(function (w, d, s, l, i) {
@@ -34,6 +34,8 @@
 
   <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/styles.css">
+  <!-- P.S. We love Cloudflare! -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
 <body>
@@ -199,6 +201,10 @@
                 <textarea id="message" name="message" required minlength="20" rows="5"
                   placeholder="Tell us about your project or challenge..."></textarea>
                 <span class="form-hint">Minimum 20 characters</span>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 20px;">
+                <div class="cf-turnstile" data-sitekey="0x4AAAAAAABkMYinukE_t4Se" data-theme="light"></div>
               </div>
 
               <button type="submit" class="btn-submit" id="submit-btn">
