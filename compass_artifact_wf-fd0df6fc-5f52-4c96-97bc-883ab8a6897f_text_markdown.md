@@ -210,32 +210,32 @@ Web3Forms offers **250 free submissions/month** with no account required, making
   <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
   <input type="hidden" name="subject" value="New Inquiry from Hanu Website">
   <input type="hidden" name="redirect" value="https://hanucorp.com/thank-you">
-  
+
   <!-- Honeypot spam protection -->
   <div style="position: absolute; left: -9999px;" aria-hidden="true">
     <input type="text" name="botcheck" tabindex="-1" autocomplete="off">
   </div>
-  
+
   <div class="form-group">
     <label for="name">Full Name <span aria-hidden="true">*</span></label>
-    <input type="text" id="name" name="name" required minlength="2" 
+    <input type="text" id="name" name="name" required minlength="2"
            autocomplete="name" placeholder="John Smith">
     <span class="error-message" role="alert" aria-live="polite"></span>
   </div>
-  
+
   <div class="form-group">
     <label for="email">Email Address <span aria-hidden="true">*</span></label>
-    <input type="email" id="email" name="email" required 
+    <input type="email" id="email" name="email" required
            autocomplete="email" placeholder="john@company.com">
     <span class="error-message" role="alert" aria-live="polite"></span>
   </div>
-  
+
   <div class="form-group">
     <label for="company">Company Name</label>
-    <input type="text" id="company" name="company" 
+    <input type="text" id="company" name="company"
            autocomplete="organization" placeholder="Acme Inc.">
   </div>
-  
+
   <div class="form-group">
     <label for="service">Service Interest <span aria-hidden="true">*</span></label>
     <select id="service" name="service" required>
@@ -249,19 +249,19 @@ Web3Forms offers **250 free submissions/month** with no account required, making
       <option value="other">Other</option>
     </select>
   </div>
-  
+
   <div class="form-group">
     <label for="message">How can we help? <span aria-hidden="true">*</span></label>
-    <textarea id="message" name="message" required minlength="20" 
+    <textarea id="message" name="message" required minlength="20"
               rows="5" placeholder="Tell us about your project..."></textarea>
     <span class="hint">Minimum 20 characters</span>
   </div>
-  
+
   <button type="submit" id="submit-btn">
     <span class="btn-text">Send Message</span>
     <span class="btn-loading" style="display:none;">Sending...</span>
   </button>
-  
+
   <div id="form-status" role="status" aria-live="polite"></div>
 </form>
 ```
@@ -272,25 +272,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contact-form');
   const submitBtn = form.querySelector('#submit-btn');
   const statusDiv = document.getElementById('form-status');
-  
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     // Check honeypot
     if (form.querySelector('[name="botcheck"]').value) return;
-    
+
     // Loading state
     submitBtn.disabled = true;
     submitBtn.querySelector('.btn-text').style.display = 'none';
     submitBtn.querySelector('.btn-loading').style.display = 'inline';
-    
+
     try {
       const response = await fetch(form.action, {
         method: 'POST',
         body: new FormData(form),
         headers: { 'Accept': 'application/json' }
       });
-      
+
       if (response.ok) {
         statusDiv.className = 'status-message success';
         statusDiv.textContent = 'Thank you! We\'ll be in touch within 24 hours.';
@@ -394,15 +394,15 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       --text: #1A1A1A;
       --text-muted: #6B7280;
     }
-    
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
+
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--text);
       line-height: 1.6;
     }
-    
+
     /* Navigation */
     .nav {
       position: fixed;
@@ -418,33 +418,33 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       backdrop-filter: blur(10px);
       transition: padding 0.3s, box-shadow 0.3s;
     }
-    
+
     .nav.scrolled {
       padding: 0.75rem 2rem;
       box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
     }
-    
+
     .logo {
       font-size: 1.5rem;
       font-weight: 700;
       color: var(--navy);
     }
-    
+
     .nav-links {
       display: flex;
       gap: 2rem;
       list-style: none;
     }
-    
+
     .nav-links a {
       text-decoration: none;
       color: var(--text);
       font-weight: 500;
       transition: color 0.2s;
     }
-    
+
     .nav-links a:hover { color: var(--primary); }
-    
+
     .nav-cta {
       padding: 0.75rem 1.5rem;
       background: var(--primary);
@@ -454,9 +454,9 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       font-weight: 600;
       transition: background 0.2s;
     }
-    
+
     .nav-cta:hover { background: var(--primary-dark); }
-    
+
     /* Hero Section */
     .hero {
       min-height: 100vh;
@@ -467,7 +467,7 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       position: relative;
       overflow: hidden;
     }
-    
+
     .hero-background {
       position: absolute;
       top: 0;
@@ -477,7 +477,7 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       opacity: 0.1;
       background: radial-gradient(circle at 50% 50%, var(--primary) 0%, transparent 70%);
     }
-    
+
     .hero-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -486,9 +486,9 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       gap: 4rem;
       align-items: center;
     }
-    
+
     .hero-content { position: relative; z-index: 1; }
-    
+
     .hero-badge {
       display: inline-block;
       padding: 0.5rem 1rem;
@@ -499,7 +499,7 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       border-radius: 50px;
       margin-bottom: 1.5rem;
     }
-    
+
     .hero-title {
       font-size: clamp(2.5rem, 5vw, 4rem);
       font-weight: 700;
@@ -507,20 +507,20 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       line-height: 1.1;
       margin-bottom: 1.5rem;
     }
-    
+
     .hero-title .highlight {
       background: linear-gradient(90deg, var(--primary), var(--teal));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    
+
     .hero-description {
       font-size: 1.25rem;
       color: var(--text-muted);
       margin-bottom: 2rem;
       max-width: 500px;
     }
-    
+
     .hero-cta {
       display: inline-flex;
       align-items: center;
@@ -534,75 +534,75 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       font-size: 1.125rem;
       transition: background 0.2s, transform 0.2s;
     }
-    
+
     .hero-cta:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
     }
-    
+
     .hero-cta svg { transition: transform 0.2s; }
     .hero-cta:hover svg { transform: translateX(4px); }
-    
+
     .hero-clients {
       margin-top: 3rem;
       opacity: 0.6;
     }
-    
+
     .hero-clients p {
       font-size: 0.875rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 1rem;
     }
-    
+
     .client-logos {
       display: flex;
       gap: 2rem;
       align-items: center;
     }
-    
+
     .client-logos img {
       height: 32px;
       filter: grayscale(100%);
       opacity: 0.7;
     }
-    
+
     /* Services Section */
     .services {
       padding: 6rem 2rem;
       background: white;
     }
-    
+
     .services-container {
       max-width: 1200px;
       margin: 0 auto;
     }
-    
+
     .section-header {
       text-align: center;
       margin-bottom: 4rem;
     }
-    
+
     .section-title {
       font-size: 2.5rem;
       font-weight: 700;
       color: var(--navy);
       margin-bottom: 1rem;
     }
-    
+
     .section-subtitle {
       font-size: 1.125rem;
       color: var(--text-muted);
       max-width: 600px;
       margin: 0 auto;
     }
-    
+
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 2rem;
     }
-    
+
     .service-card {
       padding: 2rem;
       background: white;
@@ -610,12 +610,12 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       border-radius: 12px;
       transition: transform 0.3s, box-shadow 0.3s;
     }
-    
+
     .service-card:hover {
       transform: translateY(-8px);
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
-    
+
     .service-number {
       display: inline-block;
       width: 48px;
@@ -629,19 +629,19 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       border-radius: 12px;
       margin-bottom: 1.5rem;
     }
-    
+
     .service-card h3 {
       font-size: 1.25rem;
       font-weight: 600;
       color: var(--navy);
       margin-bottom: 0.75rem;
     }
-    
+
     .service-card p {
       color: var(--text-muted);
       margin-bottom: 1rem;
     }
-    
+
     .service-link {
       display: inline-flex;
       align-items: center;
@@ -650,9 +650,9 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       text-decoration: none;
       font-weight: 500;
     }
-    
+
     .service-link:hover { text-decoration: underline; }
-    
+
     /* Responsive */
     @media (max-width: 768px) {
       .hero-container { grid-template-columns: 1fr; text-align: center; }
@@ -660,7 +660,7 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       .client-logos { justify-content: center; flex-wrap: wrap; }
       .nav-links { display: none; }
     }
-    
+
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -691,7 +691,7 @@ Here's production-ready code for the Hanu Corporation homepage hero:
           Transform Your Business with <span class="highlight">Intelligent Technology</span>
         </h1>
         <p class="hero-description">
-          We architect, build, and manage modern IT solutions that drive growth, 
+          We architect, build, and manage modern IT solutions that drive growth,
           enhance security, and accelerate your digital transformation journey.
         </p>
         <a href="/contact" class="hero-cta">
@@ -718,7 +718,7 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       <div class="section-header">
         <h2 class="section-title">What We Do</h2>
         <p class="section-subtitle">
-          Comprehensive IT services designed to modernize your infrastructure 
+          Comprehensive IT services designed to modernize your infrastructure
           and unlock new possibilities for your business.
         </p>
       </div>
@@ -766,7 +766,7 @@ Here's production-ready code for the Hanu Corporation homepage hero:
   <!-- AOS Library -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
-  
+
   <script>
     // Initialize AOS
     AOS.init({
@@ -774,7 +774,7 @@ Here's production-ready code for the Hanu Corporation homepage hero:
       once: true,
       offset: 100
     });
-    
+
     // Sticky nav scroll effect
     const nav = document.querySelector('.nav');
     window.addEventListener('scroll', () => {
