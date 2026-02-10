@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Hanu Corporation - Enterprise IT Solutions Website",
   "scripts": {
-    "start": "serve . -l $PORT",
+    "start": "npx serve . -l $PORT",
     "dev": "serve . -l 3000"
   },
   "dependencies": {
