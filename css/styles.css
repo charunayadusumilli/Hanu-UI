@@ -179,10 +179,11 @@ ol {
   display: flex;
   align-items: center;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .logo img {
-  height: 32px;
+  height: 56px;
   width: auto;
 }
 
